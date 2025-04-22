@@ -33,4 +33,36 @@ public class RestaurantService {
         return restaurantMapper.toDTO(saved);
     }
 
-    public Restaurant
+    public RestaurantDTO getRestaurantById(Long id) {
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID " + id + " not found"));
+        return restaurantMapper.toDTO(restaurant);
+    }
+
+    public List<RestaurantDTO> getAllRestaurants() {
+        return restaurantRepository.findAll()
+                .stream()
+                .map(restaurantMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public RestaurantDTO updateRestaurant(Long id, RestaurantDTO restaurantDTO) {
+        Restaurant existing = restaurantRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID " + id + " not found"));
+
+        // Update fields
+        existing.setName(restaurantDTO.getName());
+        existing.setAddress(restaurantDTO.getAddress());
+        existing.setPhoneNumber(restaurantDTO.getPhoneNumber());
+        existing.setEmail(restaurantDTO.getEmail());
+
+        Restaurant updated = restaurantRepository.save(existing);
+        return restaurantMapper.toDTO(updated);
+    }
+
+    public void deleteRestaurant(Long id) {
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID " + id + " not found"));
+        restaurantRepository.delete(restaurant);
+    }
+}

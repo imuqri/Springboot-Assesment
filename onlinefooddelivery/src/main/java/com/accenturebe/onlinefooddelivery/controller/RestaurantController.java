@@ -1,7 +1,6 @@
 package com.accenturebe.onlinefooddelivery.controller;
 
 import com.accenturebe.onlinefooddelivery.dto.RestaurantDTO;
-import com.accenturebe.onlinefooddelivery.entity.Restaurant;
 import com.accenturebe.onlinefooddelivery.service.RestaurantService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -15,34 +14,32 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
 
-    // Constructor injection
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
 
-
     @PostMapping
     public ResponseEntity<RestaurantDTO> addRestaurant(@RequestBody @Valid RestaurantDTO restaurantDTO) {
-        Restaurant addedRestaurant = restaurantService.addRestaurant(restaurantDTO);
-        return ResponseEntity.ok(addedRestaurant);
+        RestaurantDTO addedRestaurant = restaurantService.addRestaurant(restaurantDTO);
+        return ResponseEntity.status(201).body(addedRestaurant);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> getRestaurant(@PathVariable Long id) {
-        Restaurant restaurant = restaurantService.getRestaurantById(id);
+    public ResponseEntity<RestaurantDTO> getRestaurant(@PathVariable Long id) {
+        RestaurantDTO restaurant = restaurantService.getRestaurantById(id);
         return ResponseEntity.ok(restaurant);
     }
 
     @GetMapping
-    public ResponseEntity<List<Restaurant>> getAllRestaurants() {
-        List<Restaurant> restaurants = restaurantService.getAllRestaurants();
+    public ResponseEntity<List<RestaurantDTO>> getAllRestaurants() {
+        List<RestaurantDTO> restaurants = restaurantService.getAllRestaurants();
         return ResponseEntity.ok(restaurants);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Restaurant> updateRestaurant(@PathVariable Long id, @RequestBody @Valid RestaurantDTO restaurantDTO) {
-        Restaurant restaurant = restaurantService.updateRestaurant(id, restaurantDTO);
-        return ResponseEntity.ok(restaurant);
+    public ResponseEntity<RestaurantDTO> updateRestaurant(@PathVariable Long id, @RequestBody @Valid RestaurantDTO restaurantDTO) {
+        RestaurantDTO updated = restaurantService.updateRestaurant(id, restaurantDTO);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
