@@ -22,9 +22,9 @@ public class RestaurantController {
 
 
     @PostMapping
-    public ResponseEntity<Restaurant> addRestaurant(@RequestBody @Valid RestaurantDTO restaurantDTO) {
-        Restaurant restaurant = restaurantService.addRestaurant(restaurantDTO);
-        return ResponseEntity.ok(restaurant);
+    public ResponseEntity<RestaurantDTO> addRestaurant(@RequestBody @Valid RestaurantDTO restaurantDTO) {
+        Restaurant addedRestaurant = restaurantService.addRestaurant(restaurantDTO);
+        return ResponseEntity.ok(addedRestaurant);
     }
 
     @GetMapping("/{id}")
